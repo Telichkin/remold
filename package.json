@@ -1,6 +1,6 @@
 {
   "name": "rory",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Extended object for React applications",
   "main": "./lib/Rory.js",
   "dev:main": "./lib/Rory.dev.js",
