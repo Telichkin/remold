@@ -93,6 +93,6 @@ export default class App extends React.Component {
 ```
 
 Here is a result:
-<img src="https://rawgit.com/Telichkin/otp_cheatsheet/master/pictures/counter.gif">
+<img src="https://rawgit.com/Telichkin/rory/master/pictures/counter.gif">
 
 You can also play with example in [repl.it](https://repl.it/@Telichkin/RoryCounter)
