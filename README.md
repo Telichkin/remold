@@ -11,7 +11,7 @@ npm install --save rory
 ## Getting started
 
 Imagine that we use [@babel/plugin-proposal-class-properties](https://babeljs.io/docs/en/babel-plugin-proposal-class-properties) 
-and one of the part of our application is the simple counter shown below:
+and one of the parts of our application is the simple counter shown below:
 
 ```js
 // Counter.js

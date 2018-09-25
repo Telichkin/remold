@@ -23,7 +23,6 @@ export default class Rory {
       componentWillMount = () => self.subscribe(this)
       componentWillUnmount = () => self.unsubscribe(this)
     }
-
   }
 
   subscribe = (aComponent) => this._subscribers.push(aComponent)
