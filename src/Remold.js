@@ -1,14 +1,14 @@
 import { Component, createElement } from 'react'
 import Id from './Id'
 
-export default class Rory {
+export default class Remold {
   _id = Id.of(this)
   _subscribers = []
   _linkedComponents = new WeakMap()
 
   id = () => this._id
 
-  link = (aComponent, aPropsMapping) => (...args) => {
+  mold = (aComponent, aPropsMapping) => (...args) => {
     if (!this._linkedComponents.has(aComponent)) {
       this._linkedComponents.set(aComponent, this._createLinkedComponent(aComponent, aPropsMapping))
     }

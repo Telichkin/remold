@@ -3,9 +3,9 @@ import babel from 'rollup-plugin-babel'
 import commonjs from 'rollup-plugin-commonjs'
 
 export default {
-  input: 'src/Rory.js',
+  input: 'src/Remold.js',
   output: {
-    file: 'lib/Rory.js',
+    file: 'lib/Remold.js',
     format: 'cjs',
     sourcemap: true,
   },

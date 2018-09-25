@@ -1,16 +1,15 @@
 {
-  "name": "rory",
-  "version": "0.2.0",
+  "name": "remold",
+  "version": "0.1.0",
   "description": "Extended object for React applications",
-  "main": "./lib/Rory.js",
-  "dev:main": "./lib/Rory.dev.js",
-  "minified:main": "./lib/Rory.min.js",
+  "main": "./lib/Remold.js",
+  "minified:main": "./lib/Remold.min.js",
   "scripts": {
     "prepublish": "npm-run-all test build",
     "clean": "rimraf lib/",
     "build": "npm-run-all --silent clean transpile uglify",
     "transpile": "BABEL_ENV=production rollup -c",
-    "uglify": "uglifyjs lib/Rory.js -c -m --source-map -o lib/Rory.min.js",
+    "uglify": "uglifyjs lib/Remold.js -c -m --source-map -o lib/Remold.min.js",
     "test": "jest --coverage"
   },
   "repository": {
@@ -23,9 +22,9 @@
   "author": "Roman Telichkin <roman@telichk.in> ",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Telichkin/rory/issues"
+    "url": "https://github.com/Telichkin/remold/issues"
   },
-  "homepage": "https://github.com/Telichkin/rory#readme",
+  "homepage": "https://github.com/Telichkin/remold#readme",
   "files": [
     "lib"
   ],

@@ -1,11 +1,11 @@
-# Rory
+# Remold
 
 You don't need to create a redux-like singleton to manage your application state. Use small objects instead!
 
 ## Install
 
 ```
-npm install --save rory
+npm install --save remold
 ```
 
 ## Getting started
@@ -47,27 +47,27 @@ export default ({ count }) => (
 )
 ```
 
-Rory can breathe a life to this React components. Edit `Counter.js`:
+Remold can breathe a life to this React components. Edit `Counter.js`:
 ```js
 // Counter.js
-import Rory from 'rory'
+import Remold from 'remold'
 import CounterComponent from './CounterComponent'
 import CounterDashboard from './CounterDashboard'
 
-export default class Counter extends Rory {
+export default class Counter extends Remold {
   _count = 0
 
   increase = this.act(() => this._count += 1)
 
   decrease = this.act(() => this._count -= 1)
 
-  asComponent = this.link(CounterComponent, () => ({
+  asComponent = this.mold(CounterComponent, () => ({
     count: this._count,
     onClickPlus: this.increase,
     onClickMinus: this.decrease,
   }))
 
-  asDashboard = this.link(CounterDashboard, () => ({
+  asDashboard = this.mold(CounterDashboard, () => ({
     count: this._count,
   }))
 }
@@ -96,4 +96,4 @@ Here is a result:
 
 <img src="pictures/counter.gif">
 
-You can also play with example in [repl.it](https://repl.it/@Telichkin/RoryCounter)
+You can also play with example in [repl.it](https://repl.it/@Telichkin/RemoldCounter)
