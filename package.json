@@ -26,6 +26,9 @@
     "url": "https://github.com/Telichkin/rory/issues"
   },
   "homepage": "https://github.com/Telichkin/rory#readme",
+  "files": [
+    "lib"
+  ],
   "babel": {
     "presets": [
       "@babel/preset-env",
