@@ -68,7 +68,6 @@
     "uglify-js": "^3.4.9"
   },
   "dependencies": {
-    "react": "^16.5.2",
-    "react-redux": "^5.0.7"
+    "react": ">=15.0.0"
   }
 }
