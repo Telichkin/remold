@@ -1,0 +1,74 @@
+{
+  "name": "rory",
+  "version": "0.1.0",
+  "description": "Extended object for React applications",
+  "main": "./lib/Rory.js",
+  "dev:main": "./lib/Rory.dev.js",
+  "minified:main": "./lib/Rory.min.js",
+  "scripts": {
+    "prepublish": "npm-run-all test build",
+    "clean": "rimraf lib/",
+    "build": "npm-run-all --silent clean transpile uglify",
+    "transpile": "BABEL_ENV=production rollup -c",
+    "uglify": "uglifyjs lib/Rory.js -c -m --source-map -o lib/Rory.min.js",
+    "test": "jest --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Telichkin/rory.git"
+  },
+  "keywords": [
+    "react"
+  ],
+  "author": "Roman Telichkin <roman@telichk.in> ",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Telichkin/rory/issues"
+  },
+  "homepage": "https://github.com/Telichkin/rory#readme",
+  "babel": {
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-react"
+    ],
+    "plugins": [
+      "@babel/plugin-proposal-class-properties"
+    ],
+    "env": {
+      "production": {
+        "presets": [
+          [
+            "@babel/preset-env",
+            {
+              "modules": false
+            }
+          ]
+        ]
+      }
+    }
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.1.0",
+    "@babel/core": "^7.1.0",
+    "@babel/plugin-proposal-class-properties": "^7.1.0",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-jest": "^23.6.0",
+    "enzyme": "^3.6.0",
+    "enzyme-adapter-react-16": "^1.5.0",
+    "jest": "^23.6.0",
+    "npm-run-all": "^4.0.0",
+    "react-dom": "^16.5.2",
+    "rimraf": "^2.6.2",
+    "rollup": "^0.66.2",
+    "rollup-plugin-babel": "^4.0.3",
+    "rollup-plugin-commonjs": "^9.1.8",
+    "rollup-plugin-node-resolve": "^3.4.0",
+    "uglify-js": "^3.4.9"
+  },
+  "dependencies": {
+    "react": "^16.5.2",
+    "react-redux": "^5.0.7"
+  }
+}
