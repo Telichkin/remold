@@ -17,13 +17,13 @@ export default class Rory {
 
   _createLinkedComponent = (aComponent, aPropsMapping) => {
     const self = this
-    class LinkedComponent extends Component {
+    return class extends Component {
+      static displayName = 'Linked' + aComponent.name
       render = () => createElement(aComponent, aPropsMapping.apply(self, this.props.args))
       componentWillMount = () => self.subscribe(this)
       componentWillUnmount = () => self.unsubscribe(this)
     }
-    LinkedComponent.displayName = 'Linked' + aComponent.name
-    return LinkedComponent
+
   }
 
   subscribe = (aComponent) => this._subscribers.push(aComponent)
