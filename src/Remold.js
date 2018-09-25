@@ -4,21 +4,21 @@ import Id from './Id'
 export default class Remold {
   _id = Id.of(this)
   _subscribers = []
-  _linkedComponents = new WeakMap()
+  _moldComponents = new WeakMap()
 
   id = () => this._id
 
   mold = (aComponent, aPropsMapping) => (...args) => {
-    if (!this._linkedComponents.has(aComponent)) {
-      this._linkedComponents.set(aComponent, this._createLinkedComponent(aComponent, aPropsMapping))
+    if (!this._moldComponents.has(aComponent)) {
+      this._moldComponents.set(aComponent, this._createMoldComponent(aComponent, aPropsMapping))
     }
-    return createElement(this._linkedComponents.get(aComponent), { args })
+    return createElement(this._moldComponents.get(aComponent), { args })
   }
 
-  _createLinkedComponent = (aComponent, aPropsMapping) => {
+  _createMoldComponent = (aComponent, aPropsMapping) => {
     const self = this
     return class extends Component {
-      static displayName = 'Linked' + aComponent.name
+      static displayName = 'Molded' + aComponent.name
       render = () => createElement(aComponent, aPropsMapping.apply(self, this.props.args))
       componentWillMount = () => self.subscribe(this)
       componentWillUnmount = () => self.unsubscribe(this)

@@ -46,8 +46,8 @@ describe('Remold subclass', () => {
   })
 
   test('Should rename linked component', () => {
-    expect(mountedCard.name()).toBe('LinkedUserCard')
-    expect(mountedTitle.name()).toBe('LinkedUserTitle')
+    expect(mountedCard.name()).toBe('MoldedUserCard')
+    expect(mountedTitle.name()).toBe('MoldedUserTitle')
   })
 
   test('Links should be rerendered after changes', () => {
