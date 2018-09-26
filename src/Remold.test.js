@@ -89,6 +89,6 @@ describe('Remold subclass', () => {
   })
 
   test('Mold should have key', () => {
-    expect(user.asCard().key).toBe(user.id())
+    expect(user.asCard().key).toBe('UserCard-' + user.id())
   })
 })

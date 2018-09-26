@@ -29,12 +29,14 @@ We want to present this counter using React component:
 // CounterComponent.jsx
 import React from 'react'
 
-export default ({ count, onClickPlus, onClickMinus }) => (
+const CounterComponent = ({ count, onClickPlus, onClickMinus }) => (
   <div>
     <p>{count}</p>
     <button onClick={onClickMinus}>-</button><button onClick={onClickPlus}>+</button>
   </div>
 )
+
+export default CounterComponent
 ```
 
 And we also want to present the counter using Dashboard:
@@ -42,9 +44,9 @@ And we also want to present the counter using Dashboard:
 // CounterDashboard.jsx
 import React from 'react'
 
-export default ({ count }) => (
-  <h1>{count}</h1>
-)
+const CounterDashboard = ({ count }) => <h1>{count}</h1>
+
+export default CounterDashboard
 ```
 
 Remold can breathe a life to this React components. Edit `Counter.js`:

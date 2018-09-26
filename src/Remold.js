@@ -12,7 +12,7 @@ export default class Remold {
     if (!this._moldedComponents.has(aComponent)) {
       this._moldedComponents.set(aComponent, this._createMoldedComponent(aComponent, aPropsMapping))
     }
-    return createElement(this._moldedComponents.get(aComponent), { args, key: this.id() })
+    return createElement(this._moldedComponents.get(aComponent), { args, key: aComponent.name + '-' + this.id() })
   }
 
   _createMoldedComponent = (aComponent, aPropsMapping) => {
