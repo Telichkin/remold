@@ -14,6 +14,7 @@ test('Should have unique id', () => {
 describe('Remold subclass', () => {
   class User extends Remold {
     name = 'Remold'
+    age = 1
 
     changeNameTo = this.act((aName) => this.name = aName)
 
@@ -24,9 +25,13 @@ describe('Remold subclass', () => {
   const UserCard = ({ name, postfix = '' } = {}) => <p>{name}{postfix}</p>
   class UserTitle extends React.Component { render = () => <h1>{this.props.name.toUpperCase()}</h1> }
 
-  const user = new User()
-  const mountedCard = mount(user.asCard())
-  const mountedTitle = mount(user.asTitle())
+  let user, mountedCard, mountedTitle;
+
+  beforeEach(() => {
+    user = new User()
+    mountedCard = mount(user.asCard())
+    mountedTitle = mount(user.asTitle())
+  })
 
   test('Should pass props into linked component', () => {
     expect(mountedCard.text()).toBe('Remold')
@@ -50,14 +55,14 @@ describe('Remold subclass', () => {
     expect(mountedTitle.name()).toBe('MoldedUserTitle')
   })
 
-  test('Links should be rerendered after changes', () => {
+  test('Molds should be rerendered after changes', () => {
     user.changeNameTo('New Remold')
 
     expect(mountedCard.text()).toBe('New Remold')
     expect(mountedTitle.text()).toBe('NEW REMOLD')
   })
 
-  test('Links should not be rerendered after unmount', () => {
+  test('Molds should not be rerendered after unmount', () => {
     let errorWasCalled = false
     console.error = () => errorWasCalled = true
 
@@ -65,5 +70,25 @@ describe('Remold subclass', () => {
     user.changeNameTo('New Remold')
 
     expect(errorWasCalled).toBeFalsy()
+  })
+
+  test('Mold should be rerendered after changes in the state only', () => {
+    let renderCalledTimes = 0
+    const ageComponent = ({ age }) => {
+      renderCalledTimes += 1
+      return <p>{age}</p>
+    }
+    const asAge = user.mold(ageComponent, () => ({
+      age: user.age,
+    }))
+    const mountedAge = mount(asAge())
+
+    user.changeNameTo('New Name')
+
+    expect(renderCalledTimes).toBe(1)
+  })
+
+  test('Mold should have key', () => {
+    expect(user.asCard().key).toBe(user.id())
   })
 })

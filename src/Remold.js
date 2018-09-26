@@ -1,4 +1,4 @@
-import { Component, createElement } from 'react'
+import { PureComponent, createElement } from 'react'
 import Id from './Id'
 
 export default class Remold {
@@ -12,16 +12,19 @@ export default class Remold {
     if (!this._moldedComponents.has(aComponent)) {
       this._moldedComponents.set(aComponent, this._createMoldedComponent(aComponent, aPropsMapping))
     }
-    return createElement(this._moldedComponents.get(aComponent), { args })
+    return createElement(this._moldedComponents.get(aComponent), { args, key: this.id() })
   }
 
   _createMoldedComponent = (aComponent, aPropsMapping) => {
     const self = this
-    return class extends Component {
-      static displayName = 'Molded' + aComponent.name
-      render = () => createElement(aComponent, aPropsMapping.apply(self, this.props.args))
+    return class extends PureComponent {
+      render = () => createElement(aComponent, this.state)
       componentWillMount = () => self.subscribe(this)
       componentWillUnmount = () => self.unsubscribe(this)
+      update = () => this.setState(this.newState())
+      newState = () => aPropsMapping.apply(self, this.props.args)
+      state = this.newState()
+      static displayName = 'Molded' + aComponent.name
     }
   }
 
@@ -31,7 +34,7 @@ export default class Remold {
 
   act = (aFunction) => (...args) => {
     const result = aFunction.apply(this, args)
-    this._subscribers.forEach(l => l.forceUpdate())
+    this._subscribers.forEach(l => l.update())
     return result
   }
 }
