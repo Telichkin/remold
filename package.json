@@ -1,6 +1,6 @@
 {
   "name": "remold",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Extended object for React applications",
   "main": "./lib/Remold.js",
   "minified:main": "./lib/Remold.min.js",
