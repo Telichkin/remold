@@ -26,17 +26,14 @@ Remold.prototype.mold = function (aComponent, aPropsMapping) {
 Remold.prototype._createMoldedComponent = function (aComponent, aPropsMapping) {
   var self = this
 
-  function Molded(props) {
-    React.PureComponent.call(this, props)
-    this.state = this.newState()
-  }
+  function Molded(props) { React.Component.call(this, props) }
   Molded.displayName = 'Molded' + aComponent.name
-  Molded.prototype = Object.create(React.PureComponent.prototype)
-  Molded.prototype.newState = function () { return aPropsMapping.apply(self, this.props.args) }
-  Molded.prototype.render = function () { return React.createElement(aComponent, this.state) }
+  Molded.prototype = Object.create(React.Component.prototype)
+  Molded.prototype.newProps = function () { return aPropsMapping.apply(self, this.props.args) }
+  Molded.prototype.render = function () { return React.createElement(aComponent, this.newProps()) }
   Molded.prototype.componentWillMount = function () { self.subscribe(this) }
   Molded.prototype.componentWillUnmount = function () { self.unsubscribe(this) }
-  Molded.prototype.update = function () { this.setState(this.newState()) }
+  Molded.prototype.update = function () { this.forceUpdate() }
   return Molded
 }
 

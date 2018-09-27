@@ -73,16 +73,17 @@ describe('Remold subclass', () => {
     expect(errorWasCalled).toBeFalsy()
   })
 
-  test('Mold should be rerendered after changes in the state only', () => {
+  test('Mold with PureComponent should be rerendered only if needed', () => {
     let renderCalledTimes = 0
-    const ageComponent = ({ age }) => {
-      renderCalledTimes += 1
-      return <p>{age}</p>
+    class AgeComponent extends React.PureComponent {
+      render = () => {
+          renderCalledTimes += 1
+          return <p>{this.props.age}</p>
+      }
     }
-    const asAge = user.mold(ageComponent, () => ({
-      age: user.age,
-    }))
-    const mountedAge = mount(asAge())
+
+    const asAge = user.mold(AgeComponent, () => ({ age: user.age }))
+    mount(asAge())
 
     user.changeNameTo('New Name')
 
