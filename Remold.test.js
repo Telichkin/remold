@@ -9,6 +9,7 @@ test('Should have unique id', () => {
   const first = new Remold(), second = new Remold()
 
   expect(first.id()).not.toBe(second.id())
+  expect(first.id()).toBe(first.id())
 })
 
 describe('Remold subclass', () => {
