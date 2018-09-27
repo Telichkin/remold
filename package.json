@@ -8,10 +8,11 @@
   "scripts": {
     "prepublish": "npm-run-all test build",
     "clean": "rimraf lib/",
-    "build": "npm-run-all --silent clean copy uglify",
+    "build": "npm-run-all --silent clean copy uglify size",
     "copy": "mkdir -p ./lib && cp Remold.js ./lib/Remold.js",
     "uglify": "uglifyjs lib/Remold.js -mc --source-map -o lib/Remold.min.js",
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "size": "size-limit"
   },
   "repository": {
     "type": "git",
@@ -38,6 +39,12 @@
       "@babel/plugin-proposal-class-properties"
     ]
   },
+  "size-limit": [
+    {
+      "path": "lib/Remold.js",
+      "limit": "1 KB"
+    }
+  ],
   "devDependencies": {
     "@babel/core": "^7.1.0",
     "@babel/plugin-proposal-class-properties": "^7.1.0",
@@ -50,9 +57,10 @@
     "npm-run-all": "^4.0.0",
     "react-dom": "^16.5.2",
     "rimraf": "^2.6.2",
+    "size-limit": "^0.20.0",
     "uglify-js": "^3.4.9"
   },
-  "dependencies": {
+  "peerDependencies": {
     "react": ">=15.0.0"
   }
 }
