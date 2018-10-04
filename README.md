@@ -10,17 +10,16 @@ npm install --save remold
 
 ## Getting started
 
-Imagine that we use [@babel/plugin-proposal-class-properties](https://babeljs.io/docs/en/babel-plugin-proposal-class-properties) 
-and one of the parts of our application is the simple counter shown below:
+Imagine that one of the parts of our application is the simple counter shown below:
 
 ```js
 // Counter.js
 export default class Counter {
   _count = 0
 
-  increase = () => this._count += 1
+  increase() { this._count += 1 }
 
-  decrease = () => this._count -= 1
+  decrease() { this._count -= 1 }
 }
 ```
 
@@ -52,26 +51,30 @@ export default CounterDashboard
 Remold can breathe a life to this React components. Edit `Counter.js`:
 ```js
 // Counter.js
-import Remold from 'remold'
+import { remold, act, mold } from 'remold'
 import CounterComponent from './CounterComponent'
 import CounterDashboard from './CounterDashboard'
 
-export default class Counter extends Remold {
+@remold export default class Counter extends Remold {
   _count = 0
 
-  increase = this.act(() => this._count += 1)
+  @act increase() { this._count += 1 }
 
-  decrease = this.act(() => this._count -= 1)
+  @act decrease() { this._count -= 1 }
 
-  asComponent = this.mold(CounterComponent, () => ({
-    count: this._count,
-    onClickPlus: this.increase,
-    onClickMinus: this.decrease,
-  }))
+  @mold(CounterComponent) asComponent() {
+    return {
+        count: this._count,
+        onClickPlus: this.increase,
+        onClickMinus: this.decrease,
+    }
+  }
 
-  asDashboard = this.mold(CounterDashboard, () => ({
-    count: this._count,
-  }))
+  @mold(CounterDashboard) asDashboard() {
+    return {
+      count: this._count,
+    }
+  }
 }
 ```
 

@@ -1,30 +1,36 @@
 import React from 'react'
 import Enzyme, { mount } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
-import Remold from './Remold'
+import { remold, act, mold } from './Remold'
 
 Enzyme.configure({ adapter: new Adapter() })
 
+const UserCard = ({ name, postfix = '' } = {}) => <p>{name}{postfix}</p>
+class UserTitle extends React.Component { render = () => <h1>{this.props.name.toUpperCase()}</h1> }
+
 test('Should have unique id', () => {
-  const first = new Remold(), second = new Remold()
+  @remold class Foo {}
+  const first = new Foo(), second = new Foo()
 
   expect(first.id()).not.toBe(second.id())
   expect(first.id()).toBe(first.id())
 })
 
 describe('Remold subclass', () => {
-  class User extends Remold {
+  @remold class User {
     name = 'Remold'
     age = 1
 
-    changeNameTo = this.act((aName) => this.name = aName)
+    @act changeNameTo(aName) { this.name = aName }
 
-    asCard = this.mold(UserCard, (postfix) => ({ name: this.name, postfix }))
-    asTitle = this.mold(UserTitle, () => ({ name: this.name }))
+    @mold(UserCard) asCard(postfix) {
+      return { name: this.name, postfix }
+    }
+
+    @mold(UserTitle) asTitle() {
+      return { name: this.name }
+    }
   }
-
-  const UserCard = ({ name, postfix = '' } = {}) => <p>{name}{postfix}</p>
-  class UserTitle extends React.Component { render = () => <h1>{this.props.name.toUpperCase()}</h1> }
 
   let user, mountedCard, mountedTitle;
 
@@ -82,8 +88,8 @@ describe('Remold subclass', () => {
       }
     }
 
-    const asAge = user.mold(AgeComponent, () => ({ age: user.age }))
-    mount(asAge())
+    const asAge = mold(AgeComponent)(null, null, { value: () => ({ age: user.age }) })
+    mount(asAge.value.apply(user))
 
     user.changeNameTo('New Name')
 
