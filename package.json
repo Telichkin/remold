@@ -2,7 +2,7 @@
   "name": "remold",
   "version": "0.1.6",
   "description": "Extended object for React applications",
-  "module": "Remold.js",
+  "module": "./lib/Remold.js",
   "main": "./lib/Remold.js",
   "minified:main": "./lib/Remold.min.js",
   "scripts": {
