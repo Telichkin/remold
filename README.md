@@ -51,11 +51,11 @@ export default CounterDashboard
 Remold can breathe a life to this React components. Edit `Counter.js`:
 ```js
 // Counter.js
-import { remold, act, mold } from 'remold'
+import { Remold, act, mold } from 'remold'
 import CounterComponent from './CounterComponent'
 import CounterDashboard from './CounterDashboard'
 
-@remold export default class Counter {
+export default class Counter extends Remold {
   _count = 0
 
   @act increase() { this._count += 1 }

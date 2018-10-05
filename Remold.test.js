@@ -1,7 +1,7 @@
 import React from 'react'
 import Enzyme, { mount } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
-import { remold, act, mold } from './Remold'
+import { Remold, act, mold } from './Remold'
 
 Enzyme.configure({ adapter: new Adapter() })
 
@@ -9,7 +9,7 @@ const UserCard = ({ name, postfix = '' } = {}) => <p>{name}{postfix}</p>
 class UserTitle extends React.Component { render = () => <h1>{this.props.name.toUpperCase()}</h1> }
 
 test('Should have unique id', () => {
-  @remold class Foo {}
+  class Foo extends Remold {}
   const first = new Foo(), second = new Foo()
 
   expect(first.__REMOLD_ID__).not.toBe(second.__REMOLD_ID__)
@@ -17,13 +17,21 @@ test('Should have unique id', () => {
 })
 
 test('Should save static properties', () => {
-  @remold class Bar { static value = 'bar' }
+  class Bar extends Remold { static value = 'bar' }
 
   expect(Bar.value).toBe('bar')
 })
 
+test('Should save static methods', () => {
+  class Bar extends Remold {
+    static foo() { return new Bar() }
+  }
+
+  expect(Bar.foo()).toHaveProperty('__REMOLD_ID__')
+})
+
 describe('Remold subclass', () => {
-  @remold class User {
+  class User extends Remold {
     name = 'Remold'
     age = 1
 

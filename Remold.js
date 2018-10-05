@@ -3,36 +3,29 @@
 var React = require('react')
 var _id = 0
 
-function remold(aClass) {
-  Object.assign(Remold, aClass)
-  Remold.prototype = Object.create(aClass.prototype)
-  function Remold () {
-    aClass.apply(this, arguments)
-    this.__REMOLD_ID__ = (_id++).toString()
-    this.__REMOLD_SUBSCRIBERS__ = []
-    this.__REMOLD_MOLDED__ = new WeakMap()
-  }
+function Remold () {
+  this.__REMOLD_ID__ = (_id++).toString()
+  this.__REMOLD_SUBSCRIBERS__ = []
+  this.__REMOLD_MOLDED__ = new WeakMap()
+}
 
-  Remold.prototype.__REMOLD_CREATE_COMPONENT__ = function (aComponent, aPropsMapping) {
-    var self = this
+Remold.prototype.__REMOLD_CREATE_COMPONENT__ = function (aComponent, aPropsMapping) {
+  var self = this
+  Molded.prototype = Object.create(React.Component.prototype)
+  function Molded(props) { React.Component.call(this, props) }
+  Molded.displayName = 'Molded' + aComponent.name
+  Molded.prototype.newProps = function () { return aPropsMapping.apply(self, this.props.args) }
+  Molded.prototype.render = function () { return React.createElement(aComponent, this.newProps()) }
+  Molded.prototype.componentWillMount = function () { self.__REMOLD_SUBSCRIBE__(this) }
+  Molded.prototype.componentWillUnmount = function () { self.__REMOLD__UNSUBSCRIBE__(this) }
+  Molded.prototype.update = function () { this.forceUpdate() }
+  return Molded
+}
 
-    Molded.prototype = Object.create(React.Component.prototype)
-    function Molded(props) { React.Component.call(this, props) }
-    Molded.displayName = 'Molded' + aComponent.name
-    Molded.prototype.newProps = function () { return aPropsMapping.apply(self, this.props.args) }
-    Molded.prototype.render = function () { return React.createElement(aComponent, this.newProps()) }
-    Molded.prototype.componentWillMount = function () { self.__REMOLD_SUBSCRIBE__(this) }
-    Molded.prototype.componentWillUnmount = function () { self.__REMOLD__UNSUBSCRIBE__(this) }
-    Molded.prototype.update = function () { this.forceUpdate() }
-    return Molded
-  }
+Remold.prototype.__REMOLD_SUBSCRIBE__ = function (aComponent) { this.__REMOLD_SUBSCRIBERS__.push(aComponent) }
 
-  Remold.prototype.__REMOLD_SUBSCRIBE__ = function (aComponent) { this.__REMOLD_SUBSCRIBERS__.push(aComponent) }
-
-  Remold.prototype.__REMOLD__UNSUBSCRIBE__ = function (aComponent) {
-    this.__REMOLD_SUBSCRIBERS__ = this.__REMOLD_SUBSCRIBERS__.filter(function (s) { return s !== aComponent })
-  }
-  return Remold
+Remold.prototype.__REMOLD__UNSUBSCRIBE__ = function (aComponent) {
+  this.__REMOLD_SUBSCRIBERS__ = this.__REMOLD_SUBSCRIBERS__.filter(function (s) { return s !== aComponent })
 }
 
 function act(t, name, descr) {
@@ -66,4 +59,4 @@ function mold(aComponent) {
   }
 }
 
-module.exports = { remold: remold, act: act, mold: mold }
+module.exports = { Remold: Remold, act: act, mold: mold }
