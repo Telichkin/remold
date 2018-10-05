@@ -16,6 +16,12 @@ test('Should have unique id', () => {
   expect(first.__REMOLD_ID__).toBe(first.__REMOLD_ID__)
 })
 
+test('Should save static properties', () => {
+  @remold class Bar { static value = 'bar' }
+
+  expect(Bar.value).toBe('bar')
+})
+
 describe('Remold subclass', () => {
   @remold class User {
     name = 'Remold'
@@ -82,9 +88,9 @@ describe('Remold subclass', () => {
   test('Mold with PureComponent should be rerendered only if needed', () => {
     let renderCalledTimes = 0
     class AgeComponent extends React.PureComponent {
-      render = () => {
-          renderCalledTimes += 1
-          return <p>{this.props.age}</p>
+      render() {
+        renderCalledTimes += 1
+        return <p>{this.props.age}</p>
       }
     }
 

@@ -4,6 +4,7 @@ var React = require('react')
 var _id = 0
 
 function remold(aClass) {
+  Object.assign(Remold, aClass)
   Remold.prototype = Object.create(aClass.prototype)
   function Remold () {
     aClass.apply(this, arguments)
