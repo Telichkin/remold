@@ -55,7 +55,7 @@ import { remold, act, mold } from 'remold'
 import CounterComponent from './CounterComponent'
 import CounterDashboard from './CounterDashboard'
 
-@remold export default class Counter extends Remold {
+@remold export default class Counter {
   _count = 0
 
   @act increase() { this._count += 1 }

@@ -36,14 +36,20 @@ function remold(aClass) {
   return Remold
 }
 
-function act(t, n, descr) {
+function act(t, name, descr) {
   var method = descr.value
-  descr.value = function () {
+  var newMethod = function () {
     var result = method.apply(this, arguments)
     for (var i = 0; i < this.__REMOLD_SUBSCRIBERS__.length; i++) { this.__REMOLD_SUBSCRIBERS__[i].update() }
     return result
   }
-  return descr
+  return {
+    get: function () {
+      var bound = newMethod.bind(this)
+      Object.defineProperty(this, name, { value: bound })
+      return bound
+    }
+  }
 }
 
 function mold(aComponent) {
@@ -51,7 +57,7 @@ function mold(aComponent) {
     var method = descr.value
     descr.value = function () {
       if (!this.__REMOLD_MOLDED__.has(aComponent)) {
-        this.__REMOLD_MOLDED__.set(aComponent, this.__REMOLD_CREATE_COMPONENT__(aComponent, method))
+        this.__REMOLD_MOLDED__.set(aComponent, this.__REMOLD_CREATE_COMPONENT__(aComponent, method.bind(this)))
       }
       return React.createElement(
         this.__REMOLD_MOLDED__.get(aComponent),
