@@ -12,8 +12,8 @@ test('Should have unique id', () => {
   @remold class Foo {}
   const first = new Foo(), second = new Foo()
 
-  expect(first.id()).not.toBe(second.id())
-  expect(first.id()).toBe(first.id())
+  expect(first.__REMOLD_ID__).not.toBe(second.__REMOLD_ID__)
+  expect(first.__REMOLD_ID__).toBe(first.__REMOLD_ID__)
 })
 
 describe('Remold subclass', () => {
@@ -97,6 +97,6 @@ describe('Remold subclass', () => {
   })
 
   test('Mold should have key', () => {
-    expect(user.asCard().key).toBe('UserCard-' + user.id())
+    expect(user.asCard().key).toBe('UserCard-' + user.__REMOLD_ID__)
   })
 })

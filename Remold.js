@@ -12,8 +12,6 @@ function remold(aClass) {
     this.__REMOLD_MOLDED__ = new WeakMap()
   }
 
-  Remold.prototype.id = function () { return this.__REMOLD_ID__ }
-
   Remold.prototype.__REMOLD_CREATE_COMPONENT__ = function (aComponent, aPropsMapping) {
     var self = this
 
@@ -61,7 +59,7 @@ function mold(aComponent) {
       }
       return React.createElement(
         this.__REMOLD_MOLDED__.get(aComponent),
-        { args: arguments, key: aComponent.name + '-' + this.id() })
+        { args: arguments, key: aComponent.name + '-' + this.__REMOLD_ID__ })
     }
     return descr
   }
