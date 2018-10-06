@@ -9,8 +9,8 @@ alternative to the popular libraries for state-management such as
 
 ## Table of Contents
 - [Installation](#installation)
-- [Rationale](#rationale)
 - [Getting Started](#getting-started)
+- [Rationale](#rationale)
 
 ## Installation
 
@@ -18,6 +18,83 @@ Remold requires **React 15.0 or later.**
 ```
 npm install --save remold
 ```
+
+
+## Getting Started
+
+Every object which wants to be represented as a React component 
+has to inherit from `Remold` class:
+```js
+import { Remold } from 'remold'
+
+export default class Counter extends Remold {
+  count = 0
+}
+```
+
+Every method which can modify object's state has to be decorated with `act`:
+```js
+import { Remold, act } from 'remold'
+
+export default class Counter extends Remold {
+  count = 0
+  
+  @act increase() { this.count += 1 }
+  
+  @act decrease() { this.count -= 1 }
+}
+```
+
+Every method which connects a React component to an object has
+to be decorated with `mold(aComponent)`:
+```js
+import React from 'react'
+import { Remold, act, mold } from 'remold'
+
+const CounterView = ({ count, onPlus, onMinus }) => (
+  <div>
+    <p>{count}</p>
+    <button onClick={onMinus}>-</button>
+    <button onClick={onPlus}>+</button>
+  </div>
+)
+
+export default class Counter extends Remold {
+  count = 0
+  
+  @act increase() { this.count += 1 }
+  
+  @act decrease() { this.count -= 1 }
+  
+  @mold(CounterView) asView() {
+    return {
+      count: this.count,
+      onPlus: this.increase,
+      onMinus: this.decrease,
+    }
+  }
+}
+```
+
+The methods decorated with `mold(aComponent)` returns an instance
+ of the React component:
+```js
+import React from 'react'
+import Counter from './Counter'
+
+const counter = new Counter()
+
+const App = () => (
+  <div>
+    {counter.asView()}
+  </div>
+)
+```
+
+### Notes
+ - Both `act` and `mold(aComponent)` decorators bound decorated method
+ - Every molded component has a unique `key` prop, so you don't need 
+ to manage this prop manually 
 
 ## Rationale
 
@@ -263,79 +340,3 @@ export class Message extends Remold {
   }
 }
 ```
-
-## Getting Started
-
-Every object which wants to be represented as a React component 
-has to inherit from `Remold` class:
-```js
-import { Remold } from 'remold'
-
-export default class Counter extends Remold {
-  count = 0
-}
-```
-
-Every method which can modify object's state has to be decorated with `act`:
-```js
-import { Remold, act } from 'remold'
-
-export default class Counter extends Remold {
-  count = 0
-  
-  @act increase() { this.count += 1 }
-  
-  @act decrease() { this.count -= 1 }
-}
-```
-
-Every method which connects a React component to an object has
-to be decorated with `mold(aComponent)`:
-```js
-import React from 'react'
-import { Remold, act, mold } from 'remold'
-
-const CounterView = ({ count, onPlus, onMinus }) => (
-  <div>
-    <p>{count}</p>
-    <button onClick={onMinus}>-</button>
-    <button onClick={onPlus}>+</button>
-  </div>
-)
-
-export default class Counter extends Remold {
-  count = 0
-  
-  @act increase() { this.count += 1 }
-  
-  @act decrease() { this.count -= 1 }
-  
-  @mold(CounterView) asView() {
-    return {
-      count: this.count,
-      onPlus: this.increase,
-      onMinus: this.decrease,
-    }
-  }
-}
-```
-
-The methods decorated with `mold(aComponent)` returns an instance
- of the React component:
-```js
-import React from 'react'
-import Counter from './Counter'
-
-const counter = new Counter()
-
-const App = () => (
-  <div>
-    {counter.asView()}
-  </div>
-)
-```
-
-### Notes
- - Both `act` and `mold(aComponent)` decorators bound decorated method
- - Every molded component has a unique `key` prop, so you don't need 
- to manage this prop manually 
