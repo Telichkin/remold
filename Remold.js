@@ -28,26 +28,17 @@ Remold.prototype.__REMOLD__UNSUBSCRIBE__ = function (aComponent) {
   this.__REMOLD_SUBSCRIBERS__ = this.__REMOLD_SUBSCRIBERS__.filter(function (s) { return s !== aComponent })
 }
 
-function act(t, name, descr) {
-  var method = descr.value
-  var newMethod = function () {
+var act = methodDecorator(function (method) {
+  return function () {
     var result = method.apply(this, arguments)
     for (var i = 0; i < this.__REMOLD_SUBSCRIBERS__.length; i++) { this.__REMOLD_SUBSCRIBERS__[i].update() }
     return result
   }
-  return {
-    get: function () {
-      var bound = newMethod.bind(this)
-      Object.defineProperty(this, name, { value: bound })
-      return bound
-    }
-  }
-}
+})
 
 function mold(aComponent) {
-  return function (t, n, descr){
-    var method = descr.value
-    descr.value = function () {
+  return methodDecorator(function (method){
+    return function () {
       if (!this.__REMOLD_MOLDED__.has(aComponent)) {
         this.__REMOLD_MOLDED__.set(aComponent, this.__REMOLD_CREATE_COMPONENT__(aComponent, method.bind(this)))
       }
@@ -55,7 +46,19 @@ function mold(aComponent) {
         this.__REMOLD_MOLDED__.get(aComponent),
         { args: arguments, key: aComponent.name + '-' + this.__REMOLD_ID__ })
     }
-    return descr
+  })
+}
+
+function methodDecorator(aFunction) {
+  return function (t, name, descr) {
+    var newMethod = aFunction(descr.value)
+    return {
+      get: function () {
+        var bound = newMethod.bind(this)
+        Object.defineProperty(this, name, { value: bound })
+        return bound
+      }
+    }
   }
 }
 

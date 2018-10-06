@@ -95,6 +95,7 @@ describe('Remold subclass', () => {
 
   test('Mold with PureComponent should be rerendered only if needed', () => {
     let renderCalledTimes = 0
+
     class AgeComponent extends React.PureComponent {
       render() {
         renderCalledTimes += 1
@@ -102,8 +103,14 @@ describe('Remold subclass', () => {
       }
     }
 
-    const asAge = mold(AgeComponent)(null, null, { value: () => ({ age: user.age }) })
-    mount(asAge.value.apply(user))
+    class AgeUser extends User {
+      @mold(AgeComponent) asAge() {
+        return { age: this.age }
+      }
+    }
+
+    const user = new AgeUser()
+    mount(user.asAge())
 
     user.changeNameTo('New Name')
 
@@ -112,5 +119,19 @@ describe('Remold subclass', () => {
 
   test('Mold should have key', () => {
     expect(user.asCard().key).toBe('UserCard-' + user.__REMOLD_ID__)
+  })
+
+  test('Act should be bound', () => {
+    function outer(aFunction, ...args) { aFunction(...args) }
+
+    outer(user.changeNameTo, 'FromOuter');
+
+    expect(user.name).toBe('FromOuter');
+  })
+
+  test('Mold should be bound', () => {
+    function outer(aFunction) { aFunction() }
+
+    expect(() => outer(user.asCard)).not.toThrowError();
   })
 })
