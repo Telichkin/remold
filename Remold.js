@@ -1,7 +1,7 @@
 'use strict'
 
 var React = require('react')
-var _id = 0
+var _id = Number.MIN_SAFE_INTEGER
 
 function Remold () {
   this.__REMOLD_ID__ = (_id++).toString()
