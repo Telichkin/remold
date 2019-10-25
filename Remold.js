@@ -7,7 +7,7 @@ function Remold () {
   this.__REMOLD_ID__ = (_id++).toString()
   this.__REMOLD_SUBSCRIBERS__ = []
   this.__REMOLD_MOLDED__ = new WeakMap()
-  self.__REMOLD_UPDATE_SCHEDULED__ = false
+  this.__REMOLD_UPDATE_SCHEDULED__ = false
 }
 
 Remold.prototype.__REMOLD_CREATE_COMPONENT__ = function (aComponent, aPropsMapping) {
