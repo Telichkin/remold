@@ -5,6 +5,14 @@ import { Remold, act, mold } from './Remold'
 
 Enzyme.configure({ adapter: new Adapter() })
 
+beforeEach(() => {
+  jest.spyOn(window, 'requestAnimationFrame').mockImplementation(cb => cb());
+});
+
+afterEach(() => {
+  window.requestAnimationFrame.mockRestore();
+});
+
 const UserCard = ({ name, postfix = '' } = {}) => <p>{name}{postfix}</p>
 class UserTitle extends React.Component { render = () => <h1>{this.props.name.toUpperCase()}</h1> }
 
